@@ -1,0 +1,36 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Generador de Notas</title>
+<style>
+body{font-family:Arial;background:#f4f4f4;max-width:1200px;margin:auto;padding:20px}
+.container{display:grid;grid-template-columns:1fr 1fr;gap:20px}.panel{background:#fff;padding:16px;border-radius:8px}
+label{display:block;margin-top:10px;font-weight:bold}input,select,textarea{width:100%;padding:8px;box-sizing:border-box}
+#out{white-space:pre-wrap;min-height:600px}.btn{margin-top:12px;padding:10px}
+</style></head><body>
+<h2>Generador de Notas - Sistema Pluvial</h2>
+<div class="container"><div class="panel">
+<label>Tipo</label><select id=t onchange="gen()"><option>A</option><option>B</option><option>C</option></select>
+<label>Expediente</label><input id=e value="EX-2026-28982024--GCABA-MGEYA" oninput="gen()">
+<label>Dirección</label><input id=d value="Madariaga 100" oninput="gen()">
+<label>Motivo</label><input id=m value="desbordamientos cloacales" oninput="gen()">
+<label>Elemento cercano (opcional)</label><input id=c value="" placeholder="Madariaga 150" oninput="gen()">
+<button class=btn onclick="navigator.clipboard.writeText(out.innerText);alert('Copiado');">Copiar</button>
+</div><div class="panel"><h3>Vista previa</h3><div id=out></div></div></div>
+<script>
+function gen(){
+let t=document.getElementById('t').value,e=eid('e'),d=eid('d'),m=eid('m'),c=eid('c');
+let cap=c?`, encontrándose aquel más cercano sobre ${c} en estado operativo.`:'.';
+let txt="DIRECCIÓN GENERAL SISTEMA PLUVIAL\nDIRECTORA GENERAL\n\n";
+if(t=="A"||t=="B"){
+txt+=`Por medio de la presente, me dirijo a Ud. atento a la solicitud extendida a través del Expediente Electrónico N° ${e}, relativa a ${m} en la calle ${d}, de esta Ciudad.\n\n`;
+txt+=`Al respecto, se informa que no existen elementos de captación o conducción pluvial sobre la mencionada ubicación catastral${cap}\n\n`;
+txt+="En ese sentido, es menester destacar que las misiones y funciones concernientes a esta repartición tienen como competencia el mantenimiento preventivo y correctivo de los elementos que componen el sistema de captación y conducción pluvial de la Ciudad Autónoma de Buenos Aires tal como se establece en el Decreto N° 144-GCABA-AJG/26.\n\n";
+if(t=="A") txt+="Por lo expuesto, atento a que el objeto causante del perjuicio no corresponde a un elemento de conducción o captación pluvial, las acciones de remediación exceden la órbita de competencias de esta repartición.";
+else txt+="Por último, cabe aclarar que, en caso de tratarse de una problemática relativa al estado de un desagüe pluvial de carácter domiciliario, el mismo es considerado parte integrante de las instalaciones internas del inmueble según el Código de Edificación, por lo que aquellas labores de remediación exceden la órbita de competencias de esta repartición.";
+txt+="\n\nSin más que agregar, saludo a Ud. muy atte.";
+}else{
+txt+=`Por medio de la presente, me dirijo a Ud. atento a la solicitud extendida a través del ${e}, relativa a ${m} en el edificio ubicado en la calle ${d}, de esta Ciudad.\n\n`;
+txt+="Al respecto esta repartición ejecutó tareas de desobstrucción sobre los elementos de captación y conducción pluvial ubicados en la zona objeto del reclamo, los cuales se encuentran en estado operativo.\n\nSin más que agregar, saludo a Ud. muy atte.";
+}
+out.innerText=txt;}
+function eid(i){return document.getElementById(i).value}
+gen();
+</script></body></html>
